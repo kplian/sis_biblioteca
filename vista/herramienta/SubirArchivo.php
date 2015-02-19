@@ -11,13 +11,13 @@ header("content-type: text/javascript; charset=UTF-8");
 <script>
 Phx.vista.SubirArchivo=Ext.extend(Phx.frmInterfaz,{
     //ActSave:'../../sis_bibliotecario/control/Herramienta/modificarColumna',
-	ActSave:'../../sis_planillas/control/ColumnaValor/modificarColumnaCsv',
+	ActSave:'../../sis_biblioteca/control/Herramienta/subirArchivo',
     constructor:function(config)
     {   
         Phx.vista.SubirArchivo.superclass.constructor.call(this,config);
         this.init();    
         this.loadValoresIniciales();
-        this.getComponente('enlace').store.setBaseParam('enlace',this.enlace);       
+              
         
     },
     
@@ -36,15 +36,6 @@ Phx.vista.SubirArchivo=Ext.extend(Phx.frmInterfaz,{
                 
     
     Atributos:[
-        {
-            config:{
-                labelSeparator:'',
-                inputType:'hidden',
-                name: 'id_herramienta'
-            },
-            type:'Field',
-            form:true
-        },
         {
 			config: {
 				name: 'id_herramienta',
@@ -103,9 +94,7 @@ Phx.vista.SubirArchivo=Ext.extend(Phx.frmInterfaz,{
             type:'Field',
             form:true 
         },      
-    ],
-    tam_pag:50,
-    id_store:'id_herramienta',
+    ],    
     title:'Subir Archivo',    
     fileUpload:true
     

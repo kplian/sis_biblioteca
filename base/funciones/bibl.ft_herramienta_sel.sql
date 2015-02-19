@@ -46,6 +46,7 @@ BEGIN
 						herr.estado_reg,
 						herr.vigencia_licencia,
 						herr.tipo,
+						herr.enlace,
 						herr.autor,
 						herr.contenido,
 						herr.titulo,

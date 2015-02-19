@@ -51,3 +51,7 @@ ALTER TABLE bibl.tasignacion ALTER COLUMN fecha_devolucion DROP NOT NULL;
 ALTER TABLE bibl.therramienta ALTER COLUMN enlace DROP NOT NULL;
 /***********************************F-SCP-JKCC-BIBL-0-13/02/2015****************************************/
 
+/***********************************I-SCP-JKCC-BIBL-0-19/02/2015****************************************/
+ALTER TABLE bibl.therramienta ALTER COLUMN contenido DROP NOT NULL;
+/***********************************F-SCP-JKCC-BIBL-0-19/02/2015****************************************/
+

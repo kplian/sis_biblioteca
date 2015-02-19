@@ -27,6 +27,7 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_herramienta	integer;
+	
 			    
 BEGIN
 
@@ -49,6 +50,7 @@ BEGIN
 			estado_reg,
 			vigencia_licencia,
 			tipo,
+			enlace,
 			autor,
 			contenido,
 			titulo,
@@ -64,6 +66,7 @@ BEGIN
 			'activo',
 			v_parametros.vigencia_licencia,
 			v_parametros.tipo,
+			v_parametros.enlace,
 			v_parametros.autor,
 			v_parametros.contenido,
 			v_parametros.titulo,
@@ -103,6 +106,7 @@ BEGIN
 			id_categoria = v_parametros.id_categoria,
 			vigencia_licencia = v_parametros.vigencia_licencia,
 			tipo = v_parametros.tipo,
+			enlace = v_parametros.enlace,
 			autor = v_parametros.autor,
 			contenido = v_parametros.contenido,
 			titulo = v_parametros.titulo,
@@ -144,6 +148,32 @@ BEGIN
             return v_resp;
 
 		end;
+         
+        /* Parametros enlace */
+	/*********************************    
+ 	 #DESCRIPCION: 	Actualiza el campo respectivo del enlace para guardar la ruta del archivo
+	 #AUTOR: 		JHONEREX(JKCC)
+	 #FECHA:			18/02/2015
+ 	 #COMENTARIOS:	
+ 	 #FECHA:		05-02-2015 21:57:48
+	***********************************/
+        
+      elsif(p_transaccion='BIBLIO_SUBARCH_MOD')then
+      begin
+                  
+		   update bibl.therramienta set
+		     enlace = v_parametros.enlace,
+		     id_usuario_mod = p_id_usuario,
+		     fecha_mod = now()
+		   where id_herramienta = v_parametros.id_herramienta;
+     
+	        --Definicion de la respuesta
+	        v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Archivo subido correctamente'); 
+	        v_resp = pxp.f_agrega_clave(v_resp,'id_herramienta',v_parametros.id_herramienta::varchar);
+	          
+	        --Devuelve la respuesta
+	        return v_resp;
+	   END;
          
 	else
      

@@ -23,9 +23,9 @@ class MODHerramienta extends MODbase{
 		$this->captura('id_herramienta','int4');
 		$this->captura('id_categoria','int4');
 		$this->captura('estado_reg','varchar');
-		//$this->captura('enlace','varchar');
 		$this->captura('vigencia_licencia','date');
 		$this->captura('tipo','varchar');
+		$this->captura('enlace','varchar');
 		$this->captura('autor','varchar');
 		$this->captura('contenido','text');
 		$this->captura('titulo','varchar');
@@ -57,9 +57,9 @@ class MODHerramienta extends MODbase{
 		//Define los parametros para la funcion
 		$this->setParametro('id_categoria','id_categoria','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-		//$this->setParametro('enlace','enlace','varchar');
 		$this->setParametro('vigencia_licencia','vigencia_licencia','date');
 		$this->setParametro('tipo','tipo','varchar');
+		$this->setParametro('enlace','enlace','varchar');
 		$this->setParametro('autor','autor','varchar');
 		$this->setParametro('contenido','contenido','text');
 		$this->setParametro('titulo','titulo','varchar');
@@ -83,9 +83,9 @@ class MODHerramienta extends MODbase{
 		$this->setParametro('id_herramienta','id_herramienta','int4');
 		$this->setParametro('id_categoria','id_categoria','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-		//$this->setParametro('enlace','enlace','varchar');
 		$this->setParametro('vigencia_licencia','vigencia_licencia','date');
 		$this->setParametro('tipo','tipo','varchar');
+		$this->setParametro('enlace','enlace','varchar');
 		$this->setParametro('autor','autor','varchar');
 		$this->setParametro('contenido','contenido','text');
 		$this->setParametro('titulo','titulo','varchar');
@@ -115,6 +115,29 @@ class MODHerramienta extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	function subirArchivo(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='bibl.ft_herramienta_ime';
+		$this->transaccion='BIBLIO_SUBARCH_MOD';
+		$this->tipo_procedimiento='IME';
+		$file_name = $this->getFileName2('archivo', 'id_herramienta', '', false);
+		$this->setFile('archivo','id_herramienta', false,25600 ,array('doc','pdf','docx','zip','rar','tar','tgz','exe','bin','msi','nrg','iso',
+																		'PDF','DOC','DOCX','ZIP','RAR','TAR','TGZ','EXE','BIN','MSI','NGR','ISO'));		
+		//Define los parametros para la funcion
+		$this->setParametro('id_herramienta', 'id_herramienta','int4');
+		//manda como parametro la url completa del archivo 
+        $this->aParam->addParametro('url', $file_name[2]);
+        $this->arreglo['enlace'] = $file_name[2];
+        $this->setParametro('enlace', 'enlace','varchar');		
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+	
 			
 }
 ?>

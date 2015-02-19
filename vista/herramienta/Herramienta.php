@@ -19,7 +19,7 @@ Phx.vista.Herramienta=Ext.extend(Phx.gridInterfaz,{
 		this.init();
 		this.iniciarEventos();
 		this.load({params:{start:0, limit:this.tam_pag}});
-		
+		alert('aaa');
 		//this.addButton('btnSubirArchivos',
 		this.addButton('btnSubirArchivos',
             {
@@ -91,7 +91,7 @@ Phx.vista.Herramienta=Ext.extend(Phx.gridInterfaz,{
 			id_grupo: 0,
 			filters: {pfiltro: 'movtip.nombre',type: 'string'},
 			grid: true,
-			egrid: true,
+			//egrid: true,
 			form: true
 		},
 		{
@@ -106,7 +106,7 @@ Phx.vista.Herramienta=Ext.extend(Phx.gridInterfaz,{
 				type:'TextField',
 				filters:{pfiltro:'herr.estado_reg',type:'string'},
 				id_grupo:1,
-				egrid:true,
+				//egrid:true,
 				form:false
 		},
 		{ //Modify combo tipo
@@ -131,7 +131,7 @@ Phx.vista.Herramienta=Ext.extend(Phx.gridInterfaz,{
 	       		 	},
 				id_grupo:0,
 				grid:true,
-				egrid:true,
+				//egrid:true,
 				form:true
 		},	
 		{
@@ -151,7 +151,7 @@ Phx.vista.Herramienta=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'herr.titulo',type:'string'},
 				id_grupo:1,
 				grid:true,
-				egrid:true,
+				//egrid:true,
 				form:true
 		},
 		/*{
@@ -168,7 +168,7 @@ Phx.vista.Herramienta=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'Field',
 		  form:true 
-		},
+		},*/
 		{
 			config:{
 				name: 'enlace',
@@ -185,9 +185,33 @@ Phx.vista.Herramienta=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'herr.enlace',type:'string'},
 				id_grupo:1,
 				grid:true,
-				egrid:true,
+				//egrid:true,
 				form:true
-		},*/
+		},
+		 {
+            config:{
+                fieldLabel: "Link de Descarga",
+                gwidth: 60,
+                inputType:'file',
+                name: 'archivo',
+                buttonText: '',   
+                maxLength:150,
+                anchor:'150%',
+                renderer:function (value, p, record){  
+                            if(record.data.enlace.length!=0) {                                
+                                return  String.format('{0}',"<div style='text-align:center'><a target=_blank align='center' width='70' height='70'>Abrir</a></div>");
+                            }
+                        },  
+                buttonCfg: {
+                    iconCls: 'upload-icon'
+                }
+            },
+            type:'Field',
+            sortable:false,
+            id_grupo:0,
+            grid:true,
+            form:false
+        },
 		{
 			config:{
 				name: 'licencia',
@@ -202,7 +226,7 @@ Phx.vista.Herramienta=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'herr.licencia',type:'string'},
 				id_grupo:1,
 				grid:true,
-				egrid:true,
+				//egrid:true,
 				form:true
 		},
 		{
@@ -221,7 +245,7 @@ Phx.vista.Herramienta=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'herr.vigencia_licencia',type:'date'},
 				id_grupo:1,
 				grid:true,
-				egrid:true,
+				//egrid:true,
 				form:true
 		},
 		{
@@ -241,7 +265,7 @@ Phx.vista.Herramienta=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'herr.autor',type:'string'},
 				id_grupo:1,
 				grid:true,
-				egrid:true,
+				//egrid:true,
 				form:true
 		},
 		{
@@ -251,7 +275,7 @@ Phx.vista.Herramienta=Ext.extend(Phx.gridInterfaz,{
 				qtip:'Introduzca un resumen o indice del contexto del libro.',
 				regex : /^[a-zA-Z\s]+$/,
 				regexText : 'Este campo solo permite el ingreso de letras A-Z',
-				allowBlank: false,
+				allowBlank: true,
 				anchor: '85%',
 				gwidth: 100,
 				emptyText: 'Introduzca un contexto del contenido...',
@@ -261,7 +285,7 @@ Phx.vista.Herramienta=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'herr.contenido',type:'string'},
 				id_grupo:1,
 				grid:true,
-				egrid:true,
+				//egrid:true,
 				form:true
 		},
 		
@@ -283,7 +307,7 @@ Phx.vista.Herramienta=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'fecha_reg',
-				fieldLabel: 'Fecha creaciÃ³n',
+				fieldLabel: 'Fecha creación',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 110,
@@ -417,6 +441,7 @@ Phx.vista.Herramienta=Ext.extend(Phx.gridInterfaz,{
 			   	this.mostrarComponente(this.cmpVigenciaLicencia);   	
 	 		}
 	   },this);
+	   this.grid.addListener('cellclick',this.oncellclick,this);
 	 },	
 	 onButtonSubirArchivo : function() {                   
         var rec=this.sm.getSelected();
@@ -427,7 +452,34 @@ Phx.vista.Herramienta=Ext.extend(Phx.gridInterfaz,{
             width:450,
             height:200
         },rec,this.idContenedor,'SubirArchivo')
+
+        
     },
+
+		//function get_ext($fname){ return substr($fname, strrpos($fname, ".") + 1); }
+	
+    oncellclick : function(grid, rowIndex, columnIndex, e) {
+    	//alert('aaaaaaa');
+	    var record = this.store.getAt(rowIndex);  // Get the Record
+	    var fieldName = grid.getColumnModel().getDataIndex(columnIndex); // Get field name	
+	   
+	    if (fieldName == 'archivo' && record.data.enlace.length!=0) {
+	    	//alert(record.data.enlace);
+	    	var exts = record.data.enlace.split(".");
+	    	//console.log(exts);
+			var extension = exts[8];
+			//alert(extension);
+	    	var data = "id=" + record.data['id_herramienta'];
+            data += "&extension=" + extension;
+            data += "&sistema=sis_biblioteca";
+            data += "&clase=Herramienta";
+            data += "&url="+record.data['enlace'];
+            //return  String.format('{0}',"<div style='text-align:center'><a target=_blank href = '../../../lib/lib_control/CTOpenFile.php?"+ data+"' align='center' width='70' height='70'>Abrir</a></div>");
+            window.open('../../../lib/lib_control/CTOpenFile.php?' + data);
+	    } 
+		
+	},
+	
      preparaMenu:function()
     {	var rec = this.sm.getSelected();
         this.desactivarMenu();         

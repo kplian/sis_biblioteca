@@ -39,6 +39,12 @@ class ACTHerramienta extends ACTbase{
 		$this->res=$this->objFunc->eliminarHerramienta($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+
+	function subirArchivo(){
+			$this->objFunc=$this->create('MODHerramienta');	
+		$this->res=$this->objFunc->subirArchivo($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
 	
 	function modificarColumna(){
 		//validar extnsion del archivo	
